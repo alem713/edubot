@@ -4,411 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduMaster | Образовательная платформа</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/96/000000/graduation-cap.png">
+    <style>
+        /* Стили из style.css - интегрированы прямо здесь */
+        :root { --primary-blue: #14bf96; --secondary-blue: #0f8c6c; --light-gray: #f6f6f6; --dark-gray: #333; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--white); color: var(--dark-gray); line-height: 1.6; }
+        .header { background-color: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: bold; color: var(--primary-blue); text-decoration: none; }
+        .auth-buttons { display: flex; gap: 15px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background-color: var(--primary-blue); color: white; }
+        .btn-primary:hover { background-color: var(--secondary-blue); }
+        .hero { background: linear-gradient(135deg, #14bf96 0%, #0a6b52 100%); color: white; padding: 80px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5em; margin-bottom: 20px; }
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin: 40px 0; }
+        .course-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; padding: 25px; text-align: center; }
+        .course-card:hover { transform: translateY(-5px); }
+        .section-title { font-size: 2em; margin-bottom: 30px; color: var(--dark-gray); }
+        .task-tracker { background: var(--light-gray); border-radius: 15px; padding: 30px; margin: 40px 0; }
+        .grade-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .grade-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
+        .grade-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
+        .grade-number { font-size: 2.5rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 0.5rem; }
+        .footer { background-color: var(--dark-gray); color: white; padding: 50px 20px; margin-top: 50px; text-align: center; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2em; } .courses-grid { grid-template-columns: 1fr; } .auth-buttons { flex-direction: column; gap: 10px; } }
+    </style>
+    <!-- Подключение скрипта -->
     <script src="script.js"></script>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Шапка -->
     <header class="header">
-        <a href="#" class="logo">
-            <div class="logo-icon">🎓</div>
-            EduMaster
-        </a>
-        
-        <nav class="nav-links">
-            <a href="#" class="nav-link active">Главная</a>
-            <a href="#courses" class="nav-link">Курсы</a>
-            <a href="#tasks" class="nav-link">Задачи</a>
-            <a href="#progress" class="nav-link">Прогресс</a>
-            <a href="#contact" class="nav-link">Контакты</a>
-        </nav>
-        
-        <div class="auth-buttons">
-            <button class="btn btn-outline" onclick="login()">Войти</button>
-            <button class="btn btn-primary" onclick="register()">Регистрация</button>
-        </div>
-        
-        <div class="user-menu" style="display: none;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div id="userAvatar" style="width: 40px; height: 40px; background: #4361ee; 
-                     color: white; border-radius: 50%; display: flex; 
-                     align-items: center; justify-content: center; font-weight: bold;">
-                    У
-                </div>
-                <span id="userName">Ученик</span>
-                <button onclick="logout()" style="background: none; border: none; 
-                        color: #666; cursor: pointer; font-size: 0.875rem;">
-                    (выйти)
-                </button>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span style="font-size: 32px;">🎓</span>
+                EduMaster
+            </a>
+            <div class="auth-buttons">
+                <button class="btn btn-primary" onclick="showLoginModal()">Войти</button>
+                <button class="btn btn-primary" onclick="showRegisterModal()">Регистрация</button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Герой -->
     <section class="hero">
-        <h1>Бесплатное образование для всех</h1>
-        <p class="hero-subtitle">Персонализированные уроки, задачи и тесты для учеников 1-11 классов</p>
-        <div style="margin-top: 2rem;">
-            <button class="btn btn-primary" onclick="startCourse('математика')" 
-                    style="padding: 1rem 2rem; font-size: 1.1rem;">
-                🚀 Начать учиться бесплатно
-            </button>
-            <button class="btn btn-outline" onclick="showCourses()" 
-                    style="padding: 1rem 2rem; font-size: 1.1rem; margin-left: 1rem;">
-                📚 Смотреть курсы
-            </button>
+        <div class="container">
+            <h1>Бесплатное образование для всех</h1>
+            <p style="margin-bottom: 30px; font-size: 1.2em;">Персонализированные уроки, задачи и тесты для учеников 1-11 классов</p>
+            <button class="btn btn-primary" style="padding: 15px 40px; font-size: 18px;" onclick="startLearning()">Начать учиться бесплатно</button>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-        <!-- Features -->
+    <!-- Основной контент -->
+    <div class="container">
+        <!-- Карточки курсов -->
         <section>
-            <h2 style="text-align: center; font-size: 2rem; margin: 3rem 0 2rem;">Что мы предлагаем</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🔢</div>
-                    <h3>Математика</h3>
-                    <p style="margin: 1rem 0; color: var(--gray-color);">
-                        От арифметики до алгебры и геометрии
-                    </p>
-                    <button class="btn btn-primary" onclick="startCourse('математика')">
-                        Начать курс
-                    </button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">🧪</div>
-                    <h3>Наука</h3>
-                    <p style="margin: 1rem 0; color: var(--gray-color);">
-                        Физика, химия, биология для всех классов
-                    </p>
-                    <button class="btn btn-primary" onclick="startCourse('наука')">
-                        Изучать
-                    </button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">💻</div>
-                    <h3>Программирование</h3>
-                    <p style="margin: 1rem 0; color: var(--gray-color);">
-                        Основы Python и алгоритмов
-                    </p>
-                    <button class="btn btn-primary" onclick="startCourse('программирование')">
-                        Начать
-                    </button>
-                </div>
+            <h2 class="section-title">Что мы предлагаем</h2>
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Динамически загрузится из JS -->
             </div>
         </section>
 
-        <!-- Task Tracker -->
-        <section id="tasks" class="task-tracker">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 1.75rem; color: var(--dark-color);">
-                    📋 Мой трекер задач
-                </h2>
-                <button class="btn btn-primary" onclick="addNewTask()">
-                    + Добавить задачу
-                </button>
-            </div>
-            <div class="task-list" id="taskList">
-                <!-- Задачи загрузятся через JavaScript -->
+        <!-- Трекер задач -->
+        <section>
+            <h2 class="section-title">📋 Мой трекер задач</h2>
+            <div class="task-tracker">
+                <div class="task-list" id="taskList">
+                    <!-- Задачи загрузятся из JS -->
+                </div>
+                <button class="btn btn-primary" onclick="addNewTask()" style="margin-top: 20px;">+ Добавить задачу</button>
             </div>
         </section>
 
-  <!-- Курсы по классам -->
-<section id="courses" style="margin: 4rem 0;">
-    <h2 style="text-align: center; font-size: 2rem; margin-bottom: 3rem;">
-        🎓 Курсы по классам
-    </h2>
-    
-    <!-- Начальная школа -->
-    <div style="margin-bottom: 4rem;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e3f2fd;">
-            <div style="width: 40px; height: 40px; background: #e3f2fd; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                🏫
-            </div>
-            <h3 style="color: var(--primary-color); font-size: 1.5rem; margin: 0;">
-                Начальная школа (1-4 классы)
-            </h3>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <!-- 1 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #4CAF50; transition: transform 0.3s;" 
-                 onclick="selectGrade(1)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    1
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Чтение, письмо, счет
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #4CAF50; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
+        <!-- Выбор класса (ТОЛЬКО ОДИН РАЗ) -->
+        <section id="courses">
+            <h2 class="section-title">🎓 Курсы по классам</h2>
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">🏫 Начальная школа (1-4 классы)</h3>
+                <div class="grade-selector">
+                    <div class="grade-card" onclick="selectGrade(1)"><div class="grade-number">1</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Чтение, письмо, счет</div></div>
+                    <div class="grade-card" onclick="selectGrade(2)"><div class="grade-number">2</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Математика, русский</div></div>
+                    <div class="grade-card" onclick="selectGrade(3)"><div class="grade-number">3</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Все основные предметы</div></div>
+                    <div class="grade-card" onclick="selectGrade(4)"><div class="grade-number">4</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к средней школе</div></div>
                 </div>
             </div>
-            
-            <!-- 2 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #2196F3; transition: transform 0.3s;" 
-                 onclick="selectGrade(2)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    2
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Математика, русский
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #2196F3; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">📚 Средняя школа (5-9 классы)</h3>
+                <div class="grade-selector">
+                    <div class="grade-card" onclick="selectGrade(5)"><div class="grade-number">5</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Начало алгебры</div></div>
+                    <div class="grade-card" onclick="selectGrade(6)"><div class="grade-number">6</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Алгебра, геометрия</div></div>
+                    <div class="grade-card" onclick="selectGrade(7)"><div class="grade-number">7</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Физика, химия</div></div>
+                    <div class="grade-card" onclick="selectGrade(8)"><div class="grade-number">8</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Геометрия, химия</div></div>
+                    <div class="grade-card" onclick="selectGrade(9)"><div class="grade-number">9</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к ОГЭ</div></div>
                 </div>
             </div>
-            
-            <!-- 3 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #FF9800; transition: transform 0.3s;" 
-                 onclick="selectGrade(3)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    3
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Все основные предметы
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #FF9800; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
+            <div>
+                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">🎓 Старшая школа (10-11 классы)</h3>
+                <div class="grade-selector">
+                    <div class="grade-card" onclick="selectGrade(10)"><div class="grade-number">10</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Углубленная программа</div></div>
+                    <div class="grade-card" onclick="selectGrade(11)"><div class="grade-number">11</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к ЕГЭ</div></div>
                 </div>
             </div>
-            
-            <!-- 4 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #9C27B0; transition: transform 0.3s;" 
-                 onclick="selectGrade(4)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    4
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Подготовка к средней школе
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #9C27B0; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Средняя школа -->
-    <div style="margin-bottom: 4rem;">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #f3e5f5;">
-            <div style="width: 40px; height: 40px; background: #f3e5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                📚
-            </div>
-            <h3 style="color: var(--primary-color); font-size: 1.5rem; margin: 0;">
-                Средняя школа (5-9 классы)
-            </h3>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <!-- 5 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #00BCD4; transition: transform 0.3s;" 
-                 onclick="selectGrade(5)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    5
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Начало алгебры
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #00BCD4; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 6 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #3F51B5; transition: transform 0.3s;" 
-                 onclick="selectGrade(6)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    6
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Алгебра, геометрия
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #3F51B5; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 7 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #E91E63; transition: transform 0.3s;" 
-                 onclick="selectGrade(7)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    7
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Физика, химия
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #E91E63; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 8 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #FF5722; transition: transform 0.3s;" 
-                 onclick="selectGrade(8)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    8
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Геометрия, химия
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #FF5722; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 9 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #607D8B; transition: transform 0.3s;" 
-                 onclick="selectGrade(9)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    9
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Подготовка к ОГЭ
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #607D8B; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Старшая школа -->
-    <div>
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e8f5e8;">
-            <div style="width: 40px; height: 40px; background: #e8f5e8; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                🎓
-            </div>
-            <h3 style="color: var(--primary-color); font-size: 1.5rem; margin: 0;">
-                Старшая школа (10-11 классы)
-            </h3>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-            <!-- 10 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #009688; transition: transform 0.3s;" 
-                 onclick="selectGrade(10)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    10
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Углубленная программа
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #009688; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 11 класс -->
-            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); text-align: center; cursor: pointer; border-left: 5px solid #795548; transition: transform 0.3s;" 
-                 onclick="selectGrade(11)">
-                <div style="font-size: 3.5rem; font-weight: bold; color: var(--primary-color); line-height: 1; margin-bottom: 0.5rem;">
-                    11
-                </div>
-                <div style="font-size: 1.2rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.5rem;">
-                    класс
-                </div>
-                <div style="color: var(--gray-color); font-size: 0.95rem; line-height: 1.4; padding: 0 1rem;">
-                    Подготовка к ЕГЭ
-                </div>
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
-                    <button style="background: #795548; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: 500; cursor: pointer;">
-                        Выбрать класс
-                    </button>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
 
-    <!-- Footer -->
-    <footer id="contact" class="footer">
-        <h3 style="margin-bottom: 1rem;">EduMaster</h3>
-        <p style="margin-bottom: 1rem; opacity: 0.9;">Образовательная платформа для учеников Казахстана</p>
-        <div style="margin-top: 2rem;">
-            <p>📧 support@edumaster.kz</p>
-            <p>📞 +7 (777) 123-45-67</p>
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 EduMaster. Образовательная платформа для учеников Казахстана</p>
         </div>
-        <p style="margin-top: 2rem; opacity: 0.7;">© 2024 EduMaster. Все права защищены.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Модальные окна (появится позже) -->
+    <div id="modals-container"></div>
+
+    <!-- Встроенный JavaScript для базовой функциональности -->
     <script>
-        // Дополнительные функции
-        function showCourses() {
-            document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
-        }
-        
+        // Базовые функции для кнопок (полная версия в script.js)
+        function startLearning() { alert("Для начала обучения выберите ваш класс выше!"); }
         function selectGrade(grade) {
-            if (!currentUser) {
-                alert('Сначала войдите в систему');
-                return;
+            if(confirm("Выбран " + grade + " класс. Перейти к курсам?")) {
+                alert("Открываем страницу с курсами для " + grade + " класса...");
+                // Здесь будет переход на courses.html?grade=X
             }
-            
-            currentUser.grade = grade;
-            localStorage.setItem('edumaster_current_user', JSON.stringify(currentUser));
-            alert(`Выбран ${grade} класс! Курсы адаптированы под ваш уровень.`);
         }
-        
-        // Инициализация при загрузке
-        window.onload = function() {
-            loadUserData();
-            loadTasks();
-            console.log('EduMaster успешно загружен!');
-        };
+        function addNewTask() {
+            const task = prompt("Введите название новой задачи:");
+            if(task) {
+                alert("Задача '" + task + "' добавлена!");
+                // Здесь будет обновление списка задач
+            }
+        }
+        function showLoginModal() { alert("Здесь будет форма входа"); }
+        function showRegisterModal() { alert("Здесь будет форма регистрации"); }
+
+        // Динамическая загрузка карточек курсов
+        document.addEventListener('DOMContentLoaded', function() {
+            const courses = [
+                {icon: "🔢", title: "Математика", desc: "От арифметики до алгебры и геометрии"},
+                {icon: "🧪", title: "Наука", desc: "Физика, химия, биология для всех классов"},
+                {icon: "💻", title: "Программирование", desc: "Основы Python и алгоритмов"}
+            ];
+            const container = document.getElementById('coursesGrid');
+            if(container) {
+                container.innerHTML = courses.map(c => `
+                    <div class="course-card">
+                        <div style="font-size:50px; margin-bottom:15px;">${c.icon}</div>
+                        <h3>${c.title}</h3>
+                        <p style="color:#666; margin:10px 0;">${c.desc}</p>
+                        <button class="btn btn-primary">Начать курс</button>
+                    </div>
+                `).join('');
+            }
+        });
     </script>
 </body>
 </html>
