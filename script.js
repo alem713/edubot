@@ -221,15 +221,27 @@ function setupEventListeners() {
     });
 }
 // Выбор класса
+// Выбор класса - переход на страницу курсов
 function selectGrade(grade) {
-    if (!currentUser) {
-        alert('Сначала войдите в систему');
-        login();
-        return;
+    // Проверяем, авторизован ли пользователь
+    const user = JSON.parse(localStorage.getItem('edumaster_current_user'));
+    
+    if (!user) {
+        if (confirm('Для просмотра курсов нужно войти в систему. Войти сейчас?')) {
+            login();
+        }
+        return false;
     }
     
-    currentUser.grade = grade;
-    localStorage.setItem('edumaster_current_user', JSON.stringify(currentUser));
+    // Сохраняем выбранный класс в профиле пользователя
+    user.grade = grade;
+    localStorage.setItem('edumaster_current_user', JSON.stringify(user));
+    
+    // Перенаправляем на страницу курсов
+    window.location.href = `courses/courses.html?grade=${grade}`;
+    
+    return true;
+}
     
     // Показать курсы для выбранного класса
     const courses = {
