@@ -1792,3 +1792,227 @@ footer {
         justify-content: center;
     }
 }
+/* ==================== ОБНОВЛЕННЫЙ ДИЗАЙН ИНСТРУМЕНТОВ ==================== */
+
+/* Общий контейнер для всех инструментов */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+/* Карточка инструмента - ВАЖНО: возвращаем старый дизайн */
+.tool-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: 1px solid #e1e8ff;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* Заголовок инструмента */
+.tool-card h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #4a6cf7;
+    font-size: 1.4rem;
+}
+
+/* Контейнер внутри карточки */
+.tool-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Поля ввода - делаем заметными */
+.tool-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #4a6cf7;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    box-sizing: border-box;
+}
+
+.tool-input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255,107,107,0.2);
+}
+
+/* Кнопки - делаем яркими и заметными */
+.tool-btn {
+    background: linear-gradient(135deg, #4a6cf7, #6a11cb);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.tool-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 15px rgba(74,108,247,0.3);
+}
+
+.tool-btn:active {
+    transform: translateY(0);
+}
+
+/* Второстепенные кнопки (примеры, варианты) */
+.tool-btn-secondary {
+    background: #f1f5ff;
+    color: #4a6cf7;
+    border: 2px solid #4a6cf7;
+}
+
+.tool-btn-secondary:hover {
+    background: #4a6cf7;
+    color: white;
+}
+
+/* Контейнер для примеров/вариантов */
+.examples-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.example-btn {
+    background: #f8faff;
+    border: 1px solid #c5d3ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.example-btn:hover {
+    background: #4a6cf7;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Область вывода результатов */
+.tool-output {
+    min-height: 80px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f8faff;
+    border: 1px dashed #a8b9ff;
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+/* Для планировщика задач - список */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    padding: 10px 15px;
+    background: white;
+    border: 1px solid #e1e8ff;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-text {
+    flex-grow: 1;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Для тестов - варианты ответов */
+.quiz-option {
+    padding: 10px;
+    background: white;
+    border: 1px solid #e1e8ff;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quiz-option:hover {
+    background: #f1f5ff;
+    border-color: #4a6cf7;
+}
+
+/* Счетчики, статусы */
+.tool-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* Метки для предметов в конспектах */
+.subject-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.subject-tag {
+    padding: 6px 12px;
+    background: #f1f5ff;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.subject-tag:hover {
+    background: #4a6cf7;
+    color: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .tool-card {
+        padding: 20px;
+    }
+}
