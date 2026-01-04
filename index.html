@@ -131,92 +131,59 @@
         
         <div class="tools-grid">
             <!-- Математический солвер -->
-            <div class="tool-card" data-tool="math">
-                <div class="tool-header">
-                    <div class="tool-icon math">
-                        <i class="fas fa-square-root-alt"></i>
-                    </div>
-                    <div class="tool-badge">Популярное</div>
-                </div>
-                <h3 class="tool-title">Математический солвер</h3>
-                <p class="tool-description">Решает уравнения, показывает шаги решения, объясняет теорию</p>
-                
-               <div class="solver-container">
-    <input type="text" class="equation-input" placeholder="Введите уравнение, например: 2x+5=13">
-    <button class="solve-btn">Решить уравнение</button>
-    <div class="equation-examples">
-        <button class="equation-example">2x+5=13</button>
-        <button class="equation-example">x^2-4=0</button>
-        <button class="equation-example">3(x-2)=9</button>
-    </div>
-    <div class="solution-output">
-        Решение появится здесь после ввода уравнения
+          <div class="tool-card">
+    <h3>Математический солвер</h3>
+    <div class="tool-container">
+        <p class="tool-description">Решает уравнения, показывает шаги решения, объясняет теорию</p>
+        
+        <input type="text" class="tool-input equation-input" placeholder="Введите уравнение, например: 2x+5=13">
+        <button class="tool-btn solve-btn">Решить уравнение</button>
+        
+        <div class="examples-container">
+            <button class="example-btn" data-equation="2x+5=13">2x+5=13</button>
+            <button class="example-btn" data-equation="x^2-4=0">x²-4=0</button>
+            <button class="example-btn" data-equation="3(x-2)=9">3(x-2)=9</button>
+        </div>
+        
+        <div class="tool-output solution-output">
+            Решение появится здесь после ввода уравнения
+        </div>
     </div>
 </div>
-                </div>
-                
-                <div class="tool-examples">
-                    <span class="example-tag" onclick="setMathExample('2x + 5 = 13')">2x+5=13</span>
-                    <span class="example-tag" onclick="setMathExample('x^2 - 4 = 0')">x²-4=0</span>
-                    <span class="example-tag" onclick="setMathExample('3(x-2) = 9')">3(x-2)=9</span>
-                </div>
-            </div>
+    
 
             <!-- Планировщик задач -->
-            <div class="tool-card" data-tool="todo">
-                <div class="tool-header">
-                    <div class="tool-icon todo">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="tool-badge">Новое</div>
+            <div class="tool-card">
+    <h3>Планировщик задач</h3>
+    <div class="tool-container">
+        <p class="tool-description">Организуй учебные задачи, дедлайны и напоминания</p>
+        
+        <input type="text" class="tool-input task-input" placeholder="Добавить новую задачу...">
+        <button class="tool-btn add-task-btn">Добавить задачу</button>
+        
+        <ul class="task-list">
+            <li class="task-item">
+                <span class="task-text">Подготовить презентацию по истории</span>
+                <div class="task-actions">
+                    <button class="example-btn complete-btn">✓</button>
+                    <button class="example-btn delete-btn">✗</button>
                 </div>
-                <h3 class="tool-title">Планировщик задач</h3>
-                <p class="tool-description">Организуй учебные задачи, дедлайны и напоминания</p>
-                
-                <div class="tool-demo">
-                    <div class="todo-input-group">
-                        <input type="text" id="taskInput" placeholder="Добавить новую задачу...">
-                        <button class="todo-add-btn" onclick="addNewTask()">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="todo-list" id="taskList">
-                        <div class="todo-item completed">
-                            <div class="todo-check" onclick="toggleTask(this)">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="todo-text">Подготовить презентацию по истории</div>
-                            <div class="todo-delete" onclick="deleteTask(this)">
-                                <i class="fas fa-times"></i>
-                            </div>
-                        </div>
-                        <div class="todo-item">
-                            <div class="todo-check" onclick="toggleTask(this)">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="todo-text">Решить задачи по физике</div>
-                            <div class="todo-delete" onclick="deleteTask(this)">
-                                <i class="fas fa-times"></i>
-                            </div>
-                        </div>
-                        <div class="todo-item">
-                            <div class="todo-check" onclick="toggleTask(this)">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="todo-text">Написать эссе по литературе</div>
-                            <div class="todo-delete" onclick="deleteTask(this)">
-                                <i class="fas fa-times"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="todo-stats">
-                        <span class="stat-item"><i class="fas fa-list-alt"></i> Всего: <span id="totalTasks">3</span></span>
-                        <span class="stat-item"><i class="fas fa-check-circle"></i> Выполнено: <span id="completedTasks">1</span></span>
-                    </div>
+            </li>
+            <li class="task-item">
+                <span class="task-text">Решить задачи по физике</span>
+                <div class="task-actions">
+                    <button class="example-btn complete-btn">✓</button>
+                    <button class="example-btn delete-btn">✗</button>
                 </div>
-            </div>
+            </li>
+        </ul>
+        
+        <div class="tool-stats">
+            <span>Всего: <span class="task-count">2</span></span>
+            <span>Выполнено: <span class="completed-count">0</span></span>
+        </div>
+    </div>
+</div>
 
             <!-- Помощник для эссе -->
             <div class="tool-card" data-tool="essay">
@@ -349,54 +316,24 @@
             </div>
 
             <!-- Тесты -->
-            <div class="tool-card" data-tool="quiz">
-                <div class="tool-header">
-                    <div class="tool-icon quiz">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                </div>
-                <h3 class="tool-title">Тесты и викторины</h3>
-                <p class="tool-description">Проверь знания, подготовься к экзаменам</p>
-                
-                <div class="tool-demo">
-                    <div class="quiz-selection">
-                        <div class="quiz-option" onclick="startMathQuiz()">
-                            <div class="quiz-icon">
-                                <i class="fas fa-calculator"></i>
-                            </div>
-                            <div class="quiz-info">
-                                <h4>Математика</h4>
-                                <p>5 вопросов · Средний уровень</p>
-                            </div>
-                            <div class="quiz-start">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="quiz-option" onclick="startHistoryQuiz()">
-                            <div class="quiz-icon">
-                                <i class="fas fa-landmark"></i>
-                            </div>
-                            <div class="quiz-info">
-                                <h4>История</h4>
-                                <p>5 вопросов · Легкий уровень</p>
-                            </div>
-                            <div class="quiz-start">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="quiz-container" id="quizContainer">
-                        <div class="quiz-placeholder">
-                            <i class="fas fa-brain"></i>
-                            <p>Выберите предмет для начала теста</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           <div class="tool-card">
+    <h3>Тесты и викторины</h3>
+    <div class="tool-container">
+        <p class="tool-description">Проверь знания, подготовься к экзаменам</p>
+        
+        <div class="subject-tags">
+            <span class="subject-tag" data-subject="math">Математика (5 вопросов)</span>
+            <span class="subject-tag" data-subject="history">История (5 вопросов)</span>
+            <span class="subject-tag" data-subject="physics">Физика (3 вопроса)</span>
         </div>
-    </section>
+        
+        <button class="tool-btn start-quiz-btn" style="display: none;">Начать тест</button>
+        
+        <div class="tool-output quiz-output">
+            Выберите предмет для начала теста
+        </div>
+    </div>
+</div>
 
     <!-- О нас -->
     <section class="about-section" id="about">
