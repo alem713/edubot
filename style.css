@@ -1630,3 +1630,165 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
 }
+/* ==================== СТИЛИ ДЛЯ МАТЕМАТИЧЕСКОГО РЕШАТЕЛЯ ==================== */
+
+/* Контейнер решателя */
+.solver-container {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+/* Поле ввода */
+.equation-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 2px solid #4a6cf7;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    box-sizing: border-box;
+}
+
+.equation-input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 3px rgba(255,107,107,0.2);
+}
+
+/* Кнопка решения */
+.solve-btn {
+    background: linear-gradient(135deg, #4a6cf7, #6a11cb);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.solve-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 15px rgba(74,108,247,0.3);
+}
+
+.solve-btn:active {
+    transform: translateY(0);
+}
+
+/* Примеры уравнений */
+.equation-examples {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.equation-example {
+    background: #f1f5ff;
+    border: 1px solid #c5d3ff;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    transition: all 0.2s;
+}
+
+.equation-example:hover {
+    background: #4a6cf7;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Блок с решением */
+.solution-output {
+    min-height: 100px;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f8faff;
+    border-left: 5px solid #4a6cf7;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Стили для отображения решения */
+.solution-box {
+    padding: 15px;
+}
+
+.steps-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #e1e8ff;
+}
+
+.steps-box ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+}
+
+.steps-box li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.answer-box {
+    background: linear-gradient(135deg, #e3ffe7, #d9e7ff);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    border: 2px solid #4a6cf7;
+}
+
+/* Сообщения об ошибках и загрузке */
+.error {
+    color: #ff4757;
+    background: #ffeaea;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #ff4757;
+}
+
+.loading {
+    color: #4a6cf7;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .solver-container {
+        padding: 15px;
+    }
+    
+    .equation-input {
+        font-size: 16px;
+        padding: 12px;
+    }
+    
+    .solve-btn {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .equation-examples {
+        justify-content: center;
+    }
+}
