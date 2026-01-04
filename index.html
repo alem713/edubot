@@ -3,163 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduMaster | Образовательная платформа</title>
-    <style>
-        /* Стили из style.css - интегрированы прямо здесь */
-        :root { --primary-blue: #14bf96; --secondary-blue: #0f8c6c; --light-gray: #f6f6f6; --dark-gray: #333; --white: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--white); color: var(--dark-gray); line-height: 1.6; }
-        .header { background-color: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 70px; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: bold; color: var(--primary-blue); text-decoration: none; }
-        .auth-buttons { display: flex; gap: 15px; }
-        .btn { padding: 12px 25px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
-        .btn-primary { background-color: var(--primary-blue); color: white; }
-        .btn-primary:hover { background-color: var(--secondary-blue); }
-        .hero { background: linear-gradient(135deg, #14bf96 0%, #0a6b52 100%); color: white; padding: 80px 20px; text-align: center; }
-        .hero h1 { font-size: 2.5em; margin-bottom: 20px; }
-        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin: 40px 0; }
-        .course-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; padding: 25px; text-align: center; }
-        .course-card:hover { transform: translateY(-5px); }
-        .section-title { font-size: 2em; margin-bottom: 30px; color: var(--dark-gray); }
-        .task-tracker { background: var(--light-gray); border-radius: 15px; padding: 30px; margin: 40px 0; }
-        .grade-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
-        .grade-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
-        .grade-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--primary-blue); }
-        .grade-number { font-size: 2.5rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 0.5rem; }
-        .footer { background-color: var(--dark-gray); color: white; padding: 50px 20px; margin-top: 50px; text-align: center; }
-        @media (max-width: 768px) { .hero h1 { font-size: 2em; } .courses-grid { grid-template-columns: 1fr; } .auth-buttons { flex-direction: column; gap: 10px; } }
-    </style>
-    <!-- Подключение скрипта -->
-    <script src="script.js"></script>
+    <title>Edumaster - Твой цифровой помощник в учебе</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Шапка -->
-    <header class="header">
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <span style="font-size: 32px;">🎓</span>
-                EduMaster
-            </a>
-            <div class="auth-buttons">
-                <button class="btn btn-primary" onclick="showLoginModal()">Войти</button>
-                <button class="btn btn-primary" onclick="showRegisterModal()">Регистрация</button>
+    <!-- Хедер -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Edumaster</span>
             </div>
-        </div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#tools">Инструменты</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Поиск по инструментам...">
+                <button onclick="searchTools()"><i class="fas fa-search"></i></button>
+            </div>
+        </nav>
     </header>
 
-    <!-- Герой -->
-    <section class="hero">
-        <div class="container">
-            <h1>Бесплатное образование для всех</h1>
-            <p style="margin-bottom: 30px; font-size: 1.2em;">Персонализированные уроки, задачи и тесты для учеников 1-11 классов</p>
-            <button class="btn btn-primary" style="padding: 15px 40px; font-size: 18px;" onclick="startLearning()">Начать учиться бесплатно</button>
+    <!-- Главный баннер -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Твой цифровой помощник в учебе</h1>
+            <p>Решай задачи, планируй учебу, пиши работы — все в одном месте</p>
+            <a href="#tools" class="cta-button">Начать использовать</a>
+        </div>
+        <div class="hero-image">
+            <i class="fas fa-brain"></i>
         </div>
     </section>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <!-- Карточки курсов -->
-        <section>
-            <h2 class="section-title">Что мы предлагаем</h2>
-            <div class="courses-grid" id="coursesGrid">
-                <!-- Динамически загрузится из JS -->
+    <!-- Инструменты -->
+    <section class="tools-section" id="tools">
+        <h2>Наши инструменты</h2>
+        <div class="tools-grid">
+            
+            <!-- Математический солвер -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Математический солвер</h3>
+                <p>Решает уравнения, показывает шаги решения</p>
+                <div class="solver-demo">
+                    <input type="text" id="mathProblem" placeholder="Введите уравнение, напр.: 2x + 5 = 13">
+                    <button onclick="solveMath()">Решить</button>
+                    <div id="mathResult"></div>
+                </div>
             </div>
-        </section>
 
-        <!-- Трекер задач -->
-        <section>
-            <h2 class="section-title">📋 Мой трекер задач</h2>
-            <div class="task-tracker">
-                <div class="task-list" id="taskList">
-                    <!-- Задачи загрузятся из JS -->
+            <!-- To-Do List -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-tasks"></i>
                 </div>
-                <button class="btn btn-primary" onclick="addNewTask()" style="margin-top: 20px;">+ Добавить задачу</button>
+                <h3>Планировщик задач</h3>
+                <p>Организуй учебные задачи и дедлайны</p>
+                <div class="todo-demo">
+                    <input type="text" id="newTask" placeholder="Новая задача">
+                    <button onclick="addTask()"><i class="fas fa-plus"></i></button>
+                    <ul id="taskList">
+                        <li>Подготовить презентацию по истории <span class="delete-task" onclick="removeTask(this)">×</span></li>
+                        <li>Решить задачи по физике <span class="delete-task" onclick="removeTask(this)">×</span></li>
+                        <li>Написать эссе по литературе <span class="delete-task" onclick="removeTask(this)">×</span></li>
+                    </ul>
+                </div>
             </div>
-        </section>
 
-        <!-- Выбор класса (ТОЛЬКО ОДИН РАЗ) -->
-        <section id="courses">
-            <h2 class="section-title">🎓 Курсы по классам</h2>
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">🏫 Начальная школа (1-4 классы)</h3>
-                <div class="grade-selector">
-                    <div class="grade-card" onclick="selectGrade(1)"><div class="grade-number">1</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Чтение, письмо, счет</div></div>
-                    <div class="grade-card" onclick="selectGrade(2)"><div class="grade-number">2</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Математика, русский</div></div>
-                    <div class="grade-card" onclick="selectGrade(3)"><div class="grade-number">3</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Все основные предметы</div></div>
-                    <div class="grade-card" onclick="selectGrade(4)"><div class="grade-number">4</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к средней школе</div></div>
+            <!-- Генератор эссе -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Помощник для эссе</h3>
+                <p>Генерирует структуру и идеи для сочинений</p>
+                <div class="essay-demo">
+                    <select id="essayTopic">
+                        <option value="">Выберите тему</option>
+                        <option value="ecology">Экология современного города</option>
+                        <option value="ai">ИИ в образовании</option>
+                        <option value="history">Роль личности в истории</option>
+                    </select>
+                    <button onclick="generateEssay()">Сгенерировать план</button>
+                    <div id="essayOutput"></div>
                 </div>
             </div>
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">📚 Средняя школа (5-9 классы)</h3>
-                <div class="grade-selector">
-                    <div class="grade-card" onclick="selectGrade(5)"><div class="grade-number">5</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Начало алгебры</div></div>
-                    <div class="grade-card" onclick="selectGrade(6)"><div class="grade-number">6</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Алгебра, геометрия</div></div>
-                    <div class="grade-card" onclick="selectGrade(7)"><div class="grade-number">7</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Физика, химия</div></div>
-                    <div class="grade-card" onclick="selectGrade(8)"><div class="grade-number">8</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Геометрия, химия</div></div>
-                    <div class="grade-card" onclick="selectGrade(9)"><div class="grade-number">9</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к ОГЭ</div></div>
+
+            <!-- Конспекты -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Умные конспекты</h3>
+                <p>Структурированные материалы по предметам</p>
+                <div class="subjects">
+                    <div class="subject" onclick="showMaterials('math')">Математика</div>
+                    <div class="subject" onclick="showMaterials('physics')">Физика</div>
+                    <div class="subject" onclick="showMaterials('history')">История</div>
+                </div>
+                <div id="materialsOutput"></div>
+            </div>
+
+            <!-- Калькулятор ЕНТ -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Калькулятор ЕНТ</h3>
+                <p>Рассчитай свои баллы для поступления</p>
+                <div class="ent-calculator">
+                    <input type="number" id="mathScore" placeholder="Математика (0-40)" min="0" max="40">
+                    <input type="number" id="physicsScore" placeholder="Физика (0-40)" min="0" max="40">
+                    <button onclick="calculateENT()">Рассчитать</button>
+                    <div id="entResult"></div>
                 </div>
             </div>
-            <div>
-                <h3 style="color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.3rem;">🎓 Старшая школа (10-11 классы)</h3>
-                <div class="grade-selector">
-                    <div class="grade-card" onclick="selectGrade(10)"><div class="grade-number">10</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Углубленная программа</div></div>
-                    <div class="grade-card" onclick="selectGrade(11)"><div class="grade-number">11</div><div>класс</div><div style="color:#666; font-size:0.9em; margin-top:0.5rem;">Подготовка к ЕГЭ</div></div>
+
+            <!-- Тесты -->
+            <div class="tool-card">
+                <div class="tool-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3>Тесты и викторины</h3>
+                <p>Проверь знания по разным предметам</p>
+                <button class="quiz-btn" onclick="startQuiz()">Начать тест по математике</button>
+                <div id="quizContainer"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section class="about-section" id="about">
+        <h2>О проекте Edumaster</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p><strong>Edumaster</strong> — это инновационная платформа, созданная для помощи школьникам и студентам в учебном процессе.</p>
+                <p>Мы объединяем все необходимые инструменты в одном месте:</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Решение сложных задач с пошаговым объяснением</li>
+                    <li><i class="fas fa-check"></i> Планирование учебной нагрузки</li>
+                    <li><i class="fas fa-check"></i> Помощь в написании академических работ</li>
+                    <li><i class="fas fa-check"></i> Подготовка к экзаменам и тестам</li>
+                </ul>
+                <p>Наша миссия — сделать образование более доступным, эффективным и менее стрессовым.</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Бесплатно</p>
+                </div>
+                <div class="stat">
+                    <h3>6+</h3>
+                    <p>Инструментов</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Доступность</p>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contact-section" id="contact">
+        <h2>Контакты</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> support@edumaster.kz</p>
+                <p><i class="fas fa-map-marker-alt"></i> Казахстан, Алматы</p>
+                <p><i class="fas fa-users"></i> Для учеников и студентов</p>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Ваше имя">
+                <input type="email" placeholder="Ваш email">
+                <textarea placeholder="Ваше сообщение"></textarea>
+                <button>Отправить</button>
+            </div>
+        </div>
+    </section>
 
     <!-- Футер -->
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 EduMaster. Образовательная платформа для учеников Казахстана</p>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Edumaster</span>
+            </div>
+            <p>Твой цифровой помощник в учебе. © 2024</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-telegram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
         </div>
     </footer>
 
-    <!-- Модальные окна (появится позже) -->
-    <div id="modals-container"></div>
-
-    <!-- Встроенный JavaScript для базовой функциональности -->
-    <script>
-        // Базовые функции для кнопок (полная версия в script.js)
-        function startLearning() { alert("Для начала обучения выберите ваш класс выше!"); }
-        function selectGrade(grade) {
-            if(confirm("Выбран " + grade + " класс. Перейти к курсам?")) {
-                alert("Открываем страницу с курсами для " + grade + " класса...");
-                // Здесь будет переход на courses.html?grade=X
-            }
-        }
-        function addNewTask() {
-            const task = prompt("Введите название новой задачи:");
-            if(task) {
-                alert("Задача '" + task + "' добавлена!");
-                // Здесь будет обновление списка задач
-            }
-        }
-        function showLoginModal() { alert("Здесь будет форма входа"); }
-        function showRegisterModal() { alert("Здесь будет форма регистрации"); }
-
-        // Динамическая загрузка карточек курсов
-        document.addEventListener('DOMContentLoaded', function() {
-            const courses = [
-                {icon: "🔢", title: "Математика", desc: "От арифметики до алгебры и геометрии"},
-                {icon: "🧪", title: "Наука", desc: "Физика, химия, биология для всех классов"},
-                {icon: "💻", title: "Программирование", desc: "Основы Python и алгоритмов"}
-            ];
-            const container = document.getElementById('coursesGrid');
-            if(container) {
-                container.innerHTML = courses.map(c => `
-                    <div class="course-card">
-                        <div style="font-size:50px; margin-bottom:15px;">${c.icon}</div>
-                        <h3>${c.title}</h3>
-                        <p style="color:#666; margin:10px 0;">${c.desc}</p>
-                        <button class="btn btn-primary">Начать курс</button>
-                    </div>
-                `).join('');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
