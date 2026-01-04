@@ -141,19 +141,18 @@
                 <h3 class="tool-title">Математический солвер</h3>
                 <p class="tool-description">Решает уравнения, показывает шаги решения, объясняет теорию</p>
                 
-                <div class="tool-demo">
-                    <div class="demo-input-group">
-                        <input type="text" id="mathInput" placeholder="Введите уравнение, например: 2x + 5 = 13">
-                        <button class="demo-btn" onclick="solveMathProblem()">
-                            <i class="fas fa-bolt"></i> Решить
-                        </button>
-                    </div>
-                    <div class="demo-result" id="mathResult">
-                        <div class="result-placeholder">
-                            <i class="fas fa-lightbulb"></i>
-                            <p>Решение появится здесь после ввода уравнения</p>
-                        </div>
-                    </div>
+               <div class="solver-container">
+    <input type="text" class="equation-input" placeholder="Введите уравнение, например: 2x+5=13">
+    <button class="solve-btn">Решить уравнение</button>
+    <div class="equation-examples">
+        <button class="equation-example">2x+5=13</button>
+        <button class="equation-example">x^2-4=0</button>
+        <button class="equation-example">3(x-2)=9</button>
+    </div>
+    <div class="solution-output">
+        Решение появится здесь после ввода уравнения
+    </div>
+</div>
                 </div>
                 
                 <div class="tool-examples">
