@@ -1,70 +1,130 @@
 const app = document.getElementById('app');
 
+// База данных проходных баллов (примерная, для демонстрации)
+const universityData = [
+    { name: "Astana IT University", score: 105, subj: "Informatics" },
+    { name: "SDU (Suleyman Demirel)", score: 100, subj: "Informatics" },
+    { name: "КазНУ им. Аль-Фараби", score: 115, subj: "Informatics" },
+    { name: "ЕНУ им. Гумилева", score: 95, subj: "Informatics" },
+    { name: "Satbayev University", score: 85, subj: "Physics" }
+];
+
 function showSection(section) {
-    // 1. Сначала очищаем контент
     app.innerHTML = '';
-    
-    // 2. Создаем новую карточку
     let content = '';
     
     if (section === 'ai') {
         content = `
             <div class="card">
-                <h2>🤖 ИИ Помощник</h2>
-                <p style="color:#94a3b8; margin-bottom:20px;">Опиши задачу, и я подскажу решение.</p>
-                <textarea id="aiInput" rows="4" placeholder="Например: Как найти площадь треугольника?"></textarea>
-                <button class="primary-btn" onclick="aiReply()">Спросить</button>
+                <h2>🤖 ИИ Тьютор + Voice <i class="fas fa-microphone-alt"></i></h2>
+                <p style="color:#94a3b8;">Напиши вопрос или нажми на микрофон:</p>
+                
+                <div style="position:relative;">
+                    <textarea id="aiInput" rows="4" placeholder="Спроси меня о физике, математике или истории..."></textarea>
+                    <button onclick="startDictation()" style="position:absolute; right:10px; bottom:10px; background:#ef4444; border-radius:50%; width:40px; height:40px; border:none; color:white; cursor:pointer;" title="Голосовой ввод">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+
+                <button class="primary-btn" onclick="aiReply()">Получить ответ</button>
                 <div id="aiRes" class="result-box" style="display:none"></div>
             </div>`;
     } else if (section === 'ent') {
+        // Загружаем сохраненные данные, если есть
+        const savedScore = localStorage.getItem('lastScore') || '';
+        
         content = `
             <div class="card">
-                <h2>🧮 Калькулятор ЕНТ</h2>
-                <input type="number" id="s1" placeholder="История Казахстана (max 20)">
-                <input type="number" id="s2" placeholder="Мат. грамотность (max 10)">
-                <input type="number" id="s3" placeholder="Грамотность чтения (max 10)">
-                <input type="number" id="s4" placeholder="Профиль 1 (max 50)">
-                <input type="number" id="s5" placeholder="Профиль 2 (max 50)">
-                <button class="primary-btn" onclick="calc()">Рассчитать итог</button>
-                <div id="entRes" class="result-box" style="display:none"></div>
+                <h2>🎓 Аналитика Грантов</h2>
+                <p style="color:#94a3b8; margin-bottom:15px;">Узнай свои шансы на поступление</p>
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <input type="number" id="s_hist" placeholder="История (20)">
+                    <input type="number" id="s_read" placeholder="Чтение (10)">
+                    <input type="number" id="s_math" placeholder="Мат. грам (10)">
+                    <input type="number" id="s_p1" placeholder="Профиль 1 (50)">
+                    <input type="number" id="s_p2" placeholder="Профиль 2 (50)">
+                </div>
+
+                <button class="primary-btn" onclick="analyzeGrant()">Рассчитать шансы</button>
+                <div id="grantRes" class="result-box" style="display:none; text-align:left;"></div>
             </div>`;
     } else if (section === 'courses') {
         content = `
             <div class="card">
-                <h2>📚 Библиотека курсов</h2>
-                <div style="display:grid; gap:15px; text-align:left;">
-                    <div style="background:#0f172a; padding:15px; border-radius:10px; border:1px solid #334155;">
-                        <h3 style="margin:0; color:#6366f1">ЕНТ Интенсив</h3>
-                        <p style="margin:5px 0 0; color:#94a3b8; font-size:14px;">Подготовка за 3 месяца</p>
+                <h2>📚 Умные Курсы</h2>
+                <div class="course-item">
+                    <h3>🐍 Python для начинающих</h3>
+                    <div style="width:100%; background:#334155; height:10px; border-radius:5px; margin:10px 0;">
+                        <div style="width:45%; background:#22c55e; height:100%; border-radius:5px;"></div>
                     </div>
-                    <div style="background:#0f172a; padding:15px; border-radius:10px; border:1px solid #334155;">
-                        <h3 style="margin:0; color:#a855f7">Математика</h3>
-                        <p style="margin:5px 0 0; color:#94a3b8; font-size:14px;">5-9 классы: вся база</p>
-                    </div>
+                    <p style="font-size:12px;">Прогресс: 45%</p>
                 </div>
             </div>`;
     }
-    
     app.innerHTML = content;
 }
 
-function calc() {
-    const sum = (+document.getElementById('s1').value) + 
-                (+document.getElementById('s2').value) + 
-                (+document.getElementById('s3').value) + 
-                (+document.getElementById('s4').value) + 
-                (+document.getElementById('s5').value);
-    
-    const box = document.getElementById('entRes');
-    box.style.display = 'block';
-    box.innerText = `Твой результат: ${sum} из 140`;
+// --- ФУНКЦИЯ 1: ГОЛОСОВОЙ ВВОД (Web Speech API) ---
+function startDictation() {
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = "ru-RU";
+        recognition.start();
+
+        document.getElementById('aiInput').placeholder = "Слушаю...";
+
+        recognition.onresult = function(e) {
+            document.getElementById('aiInput').value = e.results[0][0].transcript;
+            document.getElementById('aiInput').placeholder = "Готово!";
+        };
+
+        recognition.onerror = function(e) {
+            alert("Ошибка микрофона. Разрешите доступ в браузере.");
+        };
+    } else {
+        alert("Ваш браузер не поддерживает голосовой ввод (попробуйте Chrome).");
+    }
 }
 
+// --- ФУНКЦИЯ 2: АНАЛИЗАТОР ГРАНТОВ ---
+function analyzeGrant() {
+    // Собираем баллы
+    const inputs = ['s_hist', 's_read', 's_math', 's_p1', 's_p2'];
+    let total = 0;
+    inputs.forEach(id => total += Number(document.getElementById(id).value));
+
+    // Сохраняем в память браузера (LocalStorage)
+    localStorage.setItem('lastScore', total);
+
+    let html = `<h3>Твой балл: <span style="color:#fff; font-size:1.5em">${total}</span></h3><hr style="border-color:#ffffff20">`;
+    
+    // Алгоритм подбора ВУЗов
+    let chances = universityData.map(uni => {
+        const diff = total - uni.score;
+        let color = diff >= 0 ? '#22c55e' : '#ef4444'; // Зеленый или Красный
+        let status = diff >= 0 ? 'Проходишь ✅' : `Не хватает ${Math.abs(diff)} ❌`;
+        return `<div style="margin-bottom:10px; display:flex; justify-content:space-between;">
+                    <span>${uni.name}</span>
+                    <span style="color:${color}; font-weight:bold;">${status}</span>
+                </div>`;
+    }).join('');
+
+    const box = document.getElementById('grantRes');
+    box.style.display = 'block';
+    box.innerHTML = html + chances;
+}
+
+// Имитация ИИ (для демо версии)
 function aiReply() {
+    const q = document.getElementById('aiInput').value.toLowerCase();
     const box = document.getElementById('aiRes');
     box.style.display = 'block';
-    box.innerText = "Edumaster думает... (Здесь будет ответ нейросети)";
+    box.innerText = "Думаю...";
+    
     setTimeout(() => {
-        box.innerText = "Ответ: Для решения используй формулу S = 1/2 * a * h";
-    }, 1500);
+        if(q.includes("привет")) box.innerText = "Привет! Готов помочь с учебой.";
+        else if(q.includes("формул")) box.innerText = "Вот основные формулы: F=ma (Ньютон), E=mc² (Эйнштейн).";
+        else box.innerText = "Интересный вопрос! Для детального ответа мне нужно подключение к GPT-4 (в разработке).";
+    }, 1000);
 }
