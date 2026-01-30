@@ -1,130 +1,122 @@
 const app = document.getElementById('app');
 
-// База данных проходных баллов (примерная, для демонстрации)
-const universityData = [
-    { name: "Astana IT University", score: 105, subj: "Informatics" },
-    { name: "SDU (Suleyman Demirel)", score: 100, subj: "Informatics" },
-    { name: "КазНУ им. Аль-Фараби", score: 115, subj: "Informatics" },
-    { name: "ЕНУ им. Гумилева", score: 95, subj: "Informatics" },
-    { name: "Satbayev University", score: 85, subj: "Physics" }
+// База данных ВУЗов (Демо-данные)
+const universities = [
+    { name: "Astana IT University", min: 105 },
+    { name: "SDU University", min: 100 },
+    { name: "КазНУ им. Аль-Фараби", min: 115 },
+    { name: "AUES (Энергетический)", min: 85 },
+    { name: "ЕНУ им. Гумилева", min: 95 }
 ];
 
 function showSection(section) {
     app.innerHTML = '';
-    let content = '';
     
     if (section === 'ai') {
-        content = `
+        app.innerHTML = `
             <div class="card">
-                <h2>🤖 ИИ Тьютор + Voice <i class="fas fa-microphone-alt"></i></h2>
-                <p style="color:#94a3b8;">Напиши вопрос или нажми на микрофон:</p>
-                
-                <div style="position:relative;">
-                    <textarea id="aiInput" rows="4" placeholder="Спроси меня о физике, математике или истории..."></textarea>
-                    <button onclick="startDictation()" style="position:absolute; right:10px; bottom:10px; background:#ef4444; border-radius:50%; width:40px; height:40px; border:none; color:white; cursor:pointer;" title="Голосовой ввод">
+                <h2>🤖 Голосовой AI Тьютор</h2>
+                <p style="color:#94a3b8">Нажми на микрофон и задай вопрос.</p>
+                <div style="position:relative; margin-top:20px;">
+                    <textarea id="voiceInput" rows="4" placeholder="Я слушаю..."></textarea>
+                    <button onclick="startVoice()" style="position:absolute; bottom:10px; right:10px; border-radius:50%; width:45px; height:45px; background:#ef4444; border:none; color:white; cursor:pointer; box-shadow:0 0 10px rgba(239,68,68,0.5);">
                         <i class="fas fa-microphone"></i>
                     </button>
                 </div>
-
-                <button class="primary-btn" onclick="aiReply()">Получить ответ</button>
-                <div id="aiRes" class="result-box" style="display:none"></div>
+                <button class="primary-btn" onclick="aiResponse()">Отправить вопрос</button>
+                <div id="aiOut" class="result-box" style="display:none"></div>
             </div>`;
-    } else if (section === 'ent') {
-        // Загружаем сохраненные данные, если есть
-        const savedScore = localStorage.getItem('lastScore') || '';
+    } 
+    
+    else if (section === 'ent') {
+        // Достаем сохраненный балл из памяти (Local Storage)
+        let saved = localStorage.getItem('myScore') || '';
         
-        content = `
+        app.innerHTML = `
             <div class="card">
-                <h2>🎓 Аналитика Грантов</h2>
-                <p style="color:#94a3b8; margin-bottom:15px;">Узнай свои шансы на поступление</p>
-                
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <input type="number" id="s_hist" placeholder="История (20)">
-                    <input type="number" id="s_read" placeholder="Чтение (10)">
-                    <input type="number" id="s_math" placeholder="Мат. грам (10)">
-                    <input type="number" id="s_p1" placeholder="Профиль 1 (50)">
-                    <input type="number" id="s_p2" placeholder="Профиль 2 (50)">
+                <h2>📊 Анализатор Грантов</h2>
+                <p>Введи свои баллы ЕНТ:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <input type="number" id="s1" placeholder="История (20)">
+                    <input type="number" id="s2" placeholder="Чтение (10)">
+                    <input type="number" id="s3" placeholder="Мат.грам (10)">
+                    <input type="number" id="s4" placeholder="Профиль 1 (50)">
+                    <input type="number" id="s5" placeholder="Профиль 2 (50)">
                 </div>
-
-                <button class="primary-btn" onclick="analyzeGrant()">Рассчитать шансы</button>
-                <div id="grantRes" class="result-box" style="display:none; text-align:left;"></div>
+                <button class="primary-btn" onclick="checkGrant()">Рассчитать шансы</button>
+                <div id="grantResult" class="result-box" style="display:none; text-align:left"></div>
             </div>`;
-    } else if (section === 'courses') {
-        content = `
+    } 
+    
+    else if (section === 'courses') {
+        app.innerHTML = `
             <div class="card">
-                <h2>📚 Умные Курсы</h2>
+                <h2>📚 Прогресс обучения</h2>
                 <div class="course-item">
-                    <h3>🐍 Python для начинающих</h3>
-                    <div style="width:100%; background:#334155; height:10px; border-radius:5px; margin:10px 0;">
-                        <div style="width:45%; background:#22c55e; height:100%; border-radius:5px;"></div>
+                    <h3>💻 Информатика: Python</h3>
+                    <div style="background:#334155; height:8px; border-radius:4px; margin:10px 0;">
+                        <div style="background:#22c55e; width:70%; height:100%; border-radius:4px;"></div>
                     </div>
-                    <p style="font-size:12px;">Прогресс: 45%</p>
+                    <small>Пройдено 70%</small>
+                </div>
+                <div class="course-item">
+                    <h3>📐 Математика: Интегралы</h3>
+                    <div style="background:#334155; height:8px; border-radius:4px; margin:10px 0;">
+                        <div style="background:#f59e0b; width:30%; height:100%; border-radius:4px;"></div>
+                    </div>
+                    <small>Пройдено 30%</small>
                 </div>
             </div>`;
     }
-    app.innerHTML = content;
 }
 
-// --- ФУНКЦИЯ 1: ГОЛОСОВОЙ ВВОД (Web Speech API) ---
-function startDictation() {
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = "ru-RU";
-        recognition.start();
-
-        document.getElementById('aiInput').placeholder = "Слушаю...";
-
-        recognition.onresult = function(e) {
-            document.getElementById('aiInput').value = e.results[0][0].transcript;
-            document.getElementById('aiInput').placeholder = "Готово!";
-        };
-
-        recognition.onerror = function(e) {
-            alert("Ошибка микрофона. Разрешите доступ в браузере.");
-        };
-    } else {
-        alert("Ваш браузер не поддерживает голосовой ввод (попробуйте Chrome).");
+// --- ФУНКЦИЯ: ГОЛОСОВОЙ ВВОД ---
+function startVoice() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Голосовой ввод работает только в Google Chrome!");
+        return;
     }
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "ru-RU";
+    document.getElementById('voiceInput').placeholder = "Говорите сейчас...";
+    
+    recognition.onresult = function(event) {
+        document.getElementById('voiceInput').value = event.results[0][0].transcript;
+    };
+    recognition.start();
 }
 
-// --- ФУНКЦИЯ 2: АНАЛИЗАТОР ГРАНТОВ ---
-function analyzeGrant() {
-    // Собираем баллы
-    const inputs = ['s_hist', 's_read', 's_math', 's_p1', 's_p2'];
-    let total = 0;
-    inputs.forEach(id => total += Number(document.getElementById(id).value));
+function aiResponse() {
+    const text = document.getElementById('voiceInput').value;
+    const out = document.getElementById('aiOut');
+    out.style.display = 'block';
+    out.innerText = `AI Думает над вопросом: "${text}"... \n(Здесь будет ответ от нейросети)`;
+}
 
-    // Сохраняем в память браузера (LocalStorage)
-    localStorage.setItem('lastScore', total);
-
-    let html = `<h3>Твой балл: <span style="color:#fff; font-size:1.5em">${total}</span></h3><hr style="border-color:#ffffff20">`;
+// --- ФУНКЦИЯ: РАСЧЕТ ГРАНТОВ ---
+function checkGrant() {
+    const score = (+document.getElementById('s1').value) + 
+                  (+document.getElementById('s2').value) + 
+                  (+document.getElementById('s3').value) + 
+                  (+document.getElementById('s4').value) + 
+                  (+document.getElementById('s5').value);
     
-    // Алгоритм подбора ВУЗов
-    let chances = universityData.map(uni => {
-        const diff = total - uni.score;
-        let color = diff >= 0 ? '#22c55e' : '#ef4444'; // Зеленый или Красный
-        let status = diff >= 0 ? 'Проходишь ✅' : `Не хватает ${Math.abs(diff)} ❌`;
-        return `<div style="margin-bottom:10px; display:flex; justify-content:space-between;">
+    // Сохраняем в память браузера!
+    localStorage.setItem('myScore', score);
+
+    let html = `<h3>Твой балл: ${score} / 140</h3><hr style="opacity:0.2; margin:10px 0;">`;
+    
+    universities.forEach(uni => {
+        const pass = score >= uni.min;
+        const color = pass ? '#4ade80' : '#f87171';
+        const icon = pass ? '✅' : '❌';
+        html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                     <span>${uni.name}</span>
-                    <span style="color:${color}; font-weight:bold;">${status}</span>
-                </div>`;
-    }).join('');
+                    <span style="color:${color}; font-weight:bold">${icon} (мин. ${uni.min})</span>
+                 </div>`;
+    });
 
-    const box = document.getElementById('grantRes');
-    box.style.display = 'block';
-    box.innerHTML = html + chances;
-}
-
-// Имитация ИИ (для демо версии)
-function aiReply() {
-    const q = document.getElementById('aiInput').value.toLowerCase();
-    const box = document.getElementById('aiRes');
-    box.style.display = 'block';
-    box.innerText = "Думаю...";
-    
-    setTimeout(() => {
-        if(q.includes("привет")) box.innerText = "Привет! Готов помочь с учебой.";
-        else if(q.includes("формул")) box.innerText = "Вот основные формулы: F=ma (Ньютон), E=mc² (Эйнштейн).";
-        else box.innerText = "Интересный вопрос! Для детального ответа мне нужно подключение к GPT-4 (в разработке).";
-    }, 1000);
+    const res = document.getElementById('grantResult');
+    res.style.display = 'block';
+    res.innerHTML = html;
 }
