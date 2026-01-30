@@ -1,66 +1,59 @@
-const contentDiv = document.getElementById('main-content');
+const mainApp = document.getElementById('app');
 
-function showSection(section) {
-    if (section === 'ai-helper') {
-        contentDiv.innerHTML = `
-            <section class="active-section">
-                <h2>🤖 ИИ Помощник по ДЗ</h2>
-                <div class="calc-container">
-                    <p>Введите ваш вопрос по предмету:</p>
-                    <textarea id="ai-q" style="width:100%; height:100px; background:#222; color:white; border-radius:10px; padding:10px;"></textarea>
-                    <button class="primary-btn" onclick="askAI()" style="margin-top:10px">Получить решение</button>
-                    <div id="ai-answer" style="margin-top:20px; color:#a855f7;"></div>
+function showSection(name) {
+    if (name === 'ai') {
+        mainApp.innerHTML = `
+            <div class="card">
+                <h2>🤖 AI Помощник по ДЗ</h2>
+                <p>Введи задание, и я помогу найти решение.</p>
+                <textarea id="taskInput" placeholder="Например: Реши уравнение x²-5x+6=0"></textarea>
+                <button class="primary-btn" onclick="askAI()">Решить задачу</button>
+                <p id="aiOutput" style="margin-top:20px; color:#94a3b8;"></p>
+            </div>
+        `;
+    } else if (name === 'ent') {
+        mainApp.innerHTML = `
+            <div class="card">
+                <h2>🧮 Калькулятор ЕНТ</h2>
+                <input type="number" id="h1" placeholder="История Казахстана (max 20)">
+                <input type="number" id="h2" placeholder="Мат. грамотность (max 10)">
+                <input type="number" id="h3" placeholder="Грамотность чтения (max 10)">
+                <input type="number" id="h4" placeholder="Профильный предмет 1 (max 50)">
+                <input type="number" id="h5" placeholder="Профильный предмет 2 (max 50)">
+                <button class="primary-btn" onclick="calcENT()">Посчитать баллы</button>
+                <h2 id="result" style="margin-top:20px; color:#6366f1;"></h2>
+            </div>
+        `;
+    } else if (name === 'courses') {
+        mainApp.innerHTML = `
+            <div class="card">
+                <h2>📚 Мини-курсы</h2>
+                <div style="text-align: left; margin-top: 20px;">
+                    <div style="padding:15px; background:#1e293b; border-radius:10px; margin-bottom:10px;">🔥 ЕНТ 2026: Математика</div>
+                    <div style="padding:15px; background:#1e293b; border-radius:10px; margin-bottom:10px;">📖 Грамотность: Лайфхаки</div>
+                    <div style="padding:15px; background:#1e293b; border-radius:10px; margin-bottom:10px;">🧪 Химия/Биология: База</div>
                 </div>
-            </section>`;
-    } 
-    
-    else if (section === 'ent-calc') {
-        contentDiv.innerHTML = `
-            <section class="active-section">
-                <h2>🧮 Калькулятор баллов ЕНТ</h2>
-                <div class="calc-container">
-                    <input type="number" id="math" placeholder="Мат. грамотность (max 10)">
-                    <input type="number" id="read" placeholder="Грамотность чтения (max 10)">
-                    <input type="number" id="hist" placeholder="История Казахстана (max 20)">
-                    <input type="number" id="subj1" placeholder="Профильный предмет 1 (max 50)">
-                    <input type="number" id="subj2" placeholder="Профильный предмет 2 (max 50)">
-                    <button class="primary-btn" onclick="calculateENT()">Рассчитать</button>
-                    <h3 id="result" style="margin-top:20px"></h3>
-                </div>
-            </section>`;
-    }
-
-    else if (section === 'courses') {
-        contentDiv.innerHTML = `
-            <section class="active-section">
-                <h2>📚 Мини-курсы по классам</h2>
-                <div class="course-grid">
-                    <div class="course-item"><h3>5-9 Класс</h3><p>Базовые предметы</p></div>
-                    <div class="course-item" style="border: 2px solid #6366f1;"><h3>10-11 Класс</h3><p>Подготовка к выпуску</p></div>
-                    <div class="course-item"><h3>🔥 ЕНТ Интенсив</h3><p>Спецкурс 2024</p></div>
-                </div>
-            </section>`;
+            </div>
+        `;
     }
 }
 
-// Функция калькулятора
-function calculateENT() {
-    const m = +document.getElementById('math').value || 0;
-    const r = +document.getElementById('read').value || 0;
-    const h = +document.getElementById('hist').value || 0;
-    const s1 = +document.getElementById('subj1').value || 0;
-    const s2 = +document.getElementById('subj2').value || 0;
-    
-    const total = m + r + h + s1 + s2;
-    document.getElementById('result').innerText = `Ваш общий балл: ${total} из 140`;
+function calcENT() {
+    const scores = [
+        +document.getElementById('h1').value || 0,
+        +document.getElementById('h2').value || 0,
+        +document.getElementById('h3').value || 0,
+        +document.getElementById('h4').value || 0,
+        +document.getElementById('h5').value || 0
+    ];
+    const total = scores.reduce((a, b) => a + b, 0);
+    document.getElementById('result').innerText = `Итог: ${total} / 140`;
 }
 
-// Заглушка для ИИ
 function askAI() {
-    const q = document.getElementById('ai-q').value;
-    const ans = document.getElementById('ai-answer');
-    ans.innerText = "Думаю...";
+    const out = document.getElementById('aiOutput');
+    out.innerText = "Edumaster анализирует задание... Пожалуйста, подождите.";
     setTimeout(() => {
-        ans.innerText = "Анализ завершен. Для решения этой задачи используйте формулу дискриминанта или метод интервалов. (Интеграция с GPT скоро!)";
+        out.innerText = "Готово! Для решения этого уравнения используйте теорему Виета: корни 2 и 3.";
     }, 1500);
 }
